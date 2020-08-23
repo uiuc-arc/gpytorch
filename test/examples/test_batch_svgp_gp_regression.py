@@ -65,7 +65,7 @@ class TestSVGPRegression(unittest.TestCase):
     def test_regression_error(self):
         train_x, train_y = train_data()
         likelihood = GaussianLikelihood()
-        inducing_points = torch.linspace(0, 1, 25).unsqueeze(-1).repeat(2, 1, 1)
+        inducing_points = torch.linspace(0, 1, 10).unsqueeze(-1).repeat(2, 1, 1)
         model = SVGPRegressionModel(inducing_points)
         mll = gpytorch.mlls.VariationalELBO(likelihood, model, num_data=train_y.size(-1))
 
@@ -73,7 +73,7 @@ class TestSVGPRegression(unittest.TestCase):
         model.train()
         likelihood.train()
         optimizer = optim.Adam([{"params": model.parameters()}, {"params": likelihood.parameters()}], lr=0.01)
-        for _ in range(180):
+        for _ in range(110):
             optimizer.zero_grad()
             output = model(train_x)
             loss = -mll(output, train_y)
@@ -100,7 +100,7 @@ class TestSVGPRegression(unittest.TestCase):
     def test_regression_error_shared_inducing_locations(self):
         train_x, train_y = train_data()
         likelihood = GaussianLikelihood()
-        inducing_points = torch.linspace(0, 1, 25).unsqueeze(-1)
+        inducing_points = torch.linspace(0, 1, 20).unsqueeze(-1)
         model = SVGPRegressionModel(inducing_points)
         mll = gpytorch.mlls.VariationalELBO(likelihood, model, num_data=train_y.size(-1))
 
@@ -108,7 +108,7 @@ class TestSVGPRegression(unittest.TestCase):
         model.train()
         likelihood.train()
         optimizer = optim.Adam([{"params": model.parameters()}, {"params": likelihood.parameters()}], lr=0.01)
-        for _ in range(200):
+        for _ in range(110):
             optimizer.zero_grad()
             output = model(train_x)
             loss = -mll(output, train_y)

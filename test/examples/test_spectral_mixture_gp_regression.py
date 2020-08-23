@@ -78,7 +78,7 @@ class TestSpectralMixtureGPRegression(BaseTestCase, unittest.TestCase):
         if not empspect:
             gp_model.load_state_dict(good_state_dict, strict=False)
 
-        for i in range(300):
+        for i in range(280):
             optimizer.zero_grad()
             output = gp_model(train_x)
             loss = -mll(output, train_y)

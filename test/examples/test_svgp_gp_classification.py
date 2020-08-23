@@ -49,7 +49,7 @@ class TestSVGPClassification(BaseTestCase, unittest.TestCase):
     def test_classification_error(self, cuda=False, mll_cls=gpytorch.mlls.VariationalELBO):
         train_x, train_y = train_data(cuda=cuda)
         likelihood = BernoulliLikelihood()
-        model = SVGPClassificationModel(torch.linspace(0, 1, 25))
+        model = SVGPClassificationModel(torch.linspace(0, 1, 10))
         mll = mll_cls(likelihood, model, num_data=len(train_y))
         if cuda:
             likelihood = likelihood.cuda()
@@ -59,12 +59,12 @@ class TestSVGPClassification(BaseTestCase, unittest.TestCase):
         # Find optimal model hyperparameters
         model.train()
         likelihood.train()
-        optimizer = optim.Adam([{"params": model.parameters()}, {"params": likelihood.parameters()}], lr=0.1)
+        optimizer = optim.Adam([{"params": model.parameters()}, {"params": likelihood.parameters()}], lr=0.035999177085262686)
 
         _wrapped_cg = MagicMock(wraps=gpytorch.utils.linear_cg)
         _cg_mock = patch("gpytorch.utils.linear_cg", new=_wrapped_cg)
         with warnings.catch_warnings(record=True) as ws, _cg_mock as cg_mock:
-            for _ in range(400):
+            for _ in range(100):
                 optimizer.zero_grad()
                 output = model(train_x)
                 loss = -mll(output, train_y)

@@ -50,7 +50,7 @@ class TestSVGPRegression(BaseTestCase, unittest.TestCase):
     ):
         train_x, train_y = train_data(cuda=cuda)
         likelihood = GaussianLikelihood()
-        model = SVGPRegressionModel(torch.linspace(0, 1, 25), distribution_cls)
+        model = SVGPRegressionModel(torch.linspace(0, 1, 10), distribution_cls)
         mll = mll_cls(likelihood, model, num_data=len(train_y))
         if cuda:
             likelihood = likelihood.cuda()
@@ -63,7 +63,7 @@ class TestSVGPRegression(BaseTestCase, unittest.TestCase):
         optimizer = optim.Adam([{"params": model.parameters()}, {"params": likelihood.parameters()}], lr=0.01)
 
         with warnings.catch_warnings(record=True) as ws:
-            for _ in range(200):
+            for _ in range(100):
                 optimizer.zero_grad()
                 output = model(train_x)
                 loss = -mll(output, train_y)

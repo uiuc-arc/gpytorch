@@ -66,7 +66,7 @@ class TestKISSGPClassification(unittest.TestCase):
 
         optimizer = optim.SGD(model.parameters(), lr=0.01)
         optimizer.n_iter = 0
-        for _ in range(200):
+        for _ in range(100):
             optimizer.zero_grad()
             output = model(train_x)
             loss = -mll(output, train_y)

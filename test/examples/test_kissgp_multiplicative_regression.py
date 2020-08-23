@@ -75,9 +75,9 @@ class TestKISSGPMultiplicativeRegression(unittest.TestCase):
         gp_model.train()
         likelihood.train()
 
-        optimizer = optim.Adam(list(gp_model.parameters()) + list(likelihood.parameters()), lr=0.2)
+        optimizer = optim.Adam(list(gp_model.parameters()) + list(likelihood.parameters()), lr=0.09310231998812972)
         optimizer.n_iter = 0
-        for _ in range(15):
+        for _ in range(1):
             optimizer.zero_grad()
             output = gp_model(train_x)
             loss = -mll(output, train_y)
